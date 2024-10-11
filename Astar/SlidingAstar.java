@@ -14,6 +14,7 @@ public class SlidingAstar {
         int evaluation;
         int heuristic;
         try {
+            //take user inputs for files
             System.out.println("Enter input file name then output file name:");
             inputFileName = input.next();
             outputFileName = input.next();
@@ -44,20 +45,23 @@ public class SlidingAstar {
                 }
             }
 
+            //get eval and heur from file
             evaluation = read.nextInt();
             heuristic = read.nextInt();
 
             // setup writer
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
 
-            // solve sliding puzzle
+            // solve sliding puzzle passing the values from user and input file as well as the filewriter
             SlidingAstar s = new SlidingAstar(initial, goal, n, evaluation, heuristic, writer);
             s.solve();
 
+            //close scanners and writer
             writer.close();
+            read.close();
+            input.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println(e.getMessage());
         }
 
@@ -82,7 +86,6 @@ public class SlidingAstar {
             this.gvalue = 0; // path cost, heuristic value,
             this.hvalue = 0; // fvalue are all 0
             this.fvalue = 0;
-
             this.parent = null; // no parent
         }
     }
@@ -90,21 +93,21 @@ public class SlidingAstar {
     private Board initial; // initial board
     private Board goal; // goal board
     private int size; // board size
-    private int evaluation;
-    private int heuristic;
+    private int evaluation; //user supplied eval 
+    private int heuristic; //and heur option
     private BufferedWriter writer;
-    private int searched;
-    private int swaps;
-    private long startTime;
+    private int searched; //boards searched
+    private int swaps; //swaps actually made
+    private long startTime; //start and end time to calculate run time
     private long endTime;
 
     // Constructor of SlidingAstar class
     public SlidingAstar(int[][] initial, int[][] goal, int size, int evaluation, int heuristic, BufferedWriter writer) {
-        this.startTime = 0;
-        this.endTime = 0;
-        this.evaluation = evaluation;
-        this.writer = writer;
-        this.heuristic = heuristic;
+        this.startTime = 0; //initialize times
+        this.endTime = 0; //to 0
+        this.evaluation = evaluation; //set eval
+        this.writer = writer; //set writer
+        this.heuristic = heuristic; //set heuristic
         this.size = size; // set size of board
         this.initial = new Board(initial, size); // create initial board
         this.goal = new Board(goal, size); // create goal board
@@ -112,7 +115,7 @@ public class SlidingAstar {
 
     // Method solves sliding puzzle
     public void solve() {
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis(); //set start time 
 
         LinkedList<Board> openList = new LinkedList<Board>(); // open list
         LinkedList<Board> closedList = new LinkedList<Board>();// closed list
@@ -128,18 +131,27 @@ public class SlidingAstar {
 
             if (goal(board)) // if board is goal
             {
-                endTime = System.currentTimeMillis();
+                endTime = System.currentTimeMillis(); //set end time
                 displayPath(board); // display path to goal
-                System.out.println("Swaps made: " + swaps);
+                //display swaps, searchs, and runtime in console 
+                System.out.println("Swaps made: " + (swaps-1)); //subtract 1 from swaps to account for initial board
                 System.out.println("Boards Searched: " + searched);
                 System.out.println("Runtime in ms: " + (endTime - startTime));
+                try {
+                    //write swaps, searchs, and runtime to file                     
+                    writer.write("Swaps made: " + (swaps-1) + "\n"); //subtract 1 from swaps to account for initial board
+                    writer.write("Boards Searched: " + searched + "\n");
+                    writer.write("Runtime in ms: " + (endTime - startTime) + "\n");
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
                 return; // stop search
             } else // if board is not goal
             {
                 LinkedList<Board> children = generate(board);// create children
 
                 for (int i = 0; i < children.size(); i++) { // for each child
-                    Board child = children.get(i);
+                    Board child = children.get(i); //get child
                     searched++; // Increment boards searched
                     if (!exists(child, closedList)) // if child is not in closed list
                     {
@@ -147,22 +159,22 @@ public class SlidingAstar {
                             openList.addLast(child); // add to open list
                         else { // if child is already in open list
                             int index = find(child, openList);
-                            // Picks evaluation function to use based user choice
-                            if (evaluation == 1) {
+                            // Picks evaluation function to use based on user choice
+                            if (evaluation == 1) { //f=h
                                 if (child.hvalue < openList.get(index).hvalue) { // if hvalue of new copy
                                     openList.remove(index); // is less than old copy
-                                    openList.addLast(child); // replace old copy
-                                } // with new copy
-                            } else if (evaluation == 2) {
+                                    openList.addLast(child); // replace old copy with new copy
+                                } 
+                            } else if (evaluation == 2) { //f = g
                                 if (child.gvalue < openList.get(index).gvalue) { // if gvalue of new copy
                                     openList.remove(index); // is less than old copy
-                                    openList.addLast(child); // replace old copy
-                                } // with new copy
-                            } else {
+                                    openList.addLast(child); // replace old copy with new copy
+                                }       
+                            } else { //f = h+g
                                 if (child.fvalue < openList.get(index).fvalue) { // if fvalue of new copy
                                     openList.remove(index); // is less than old copy
-                                    openList.addLast(child); // replace old copy
-                                } // with new copy
+                                    openList.addLast(child); // replace old copy with new copy
+                                }
                             }
 
                         }
@@ -171,8 +183,8 @@ public class SlidingAstar {
             }
         }
 
-        System.out.println("no solution"); // no solution if there are
-    } // no boards in open list
+        System.out.println("no solution"); // no solution if there are no boards in open list
+    } 
 
     // Method creates children of a board
     private LinkedList<Board> generate(Board board) {
@@ -233,16 +245,17 @@ public class SlidingAstar {
             child.array[i][j] = child.array[i][j - 1];
             child.array[i][j - 1] = 0;
         }
-
         child.gvalue = board.gvalue + 1; // parent path cost plus one
         // Chooses the heuristic function based on user input
-        if (heuristic == 1) {
-            child.hvalue = heuristic_M(child); // heuristic value of child using mismatch
-
-        } else {
-            child.hvalue = heuristic_D(child); // heuristic value of child using taxi cab
+        if(evaluation != 2){ //calculate heursitics based on user input for evaluation 1 and 2
+            if (heuristic == 1) {
+                child.hvalue = heuristic_M(child); // heuristic value of child using mismatch
+    
+            } else {
+                child.hvalue = heuristic_D(child); // heuristic value of child using taxi cab
+            }
         }
-
+        
         child.fvalue = child.gvalue + child.hvalue; // gvalue plus hvalue
 
         child.parent = board; // assign parent to child
@@ -294,8 +307,7 @@ public class SlidingAstar {
         return value;
     }
 
-    // Method locates the board with minimum evaluation value based on option 1 2 or
-    // 3
+    // Method locates the board with minimum evaluation value based on option 1 2 or 3
     private int selectBest(LinkedList<Board> list) {
         int minValue;
         int minIndex;
@@ -397,7 +409,7 @@ public class SlidingAstar {
 
     // Method prints board to file and console
     private void displayBoard(Board board) {
-        for (int i = 0; i < size; i++) // print each element of board
+        for (int i = 0; i < size; i++) // print each element of board and write to file
         {
             for (int j = 0; j < size; j++) {
                 System.out.print(board.array[i][j] + " ");
@@ -408,15 +420,18 @@ public class SlidingAstar {
                 }
             }
             try {
+                //new line between lines
                 writer.newLine();
+                System.out.println();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            System.out.println();
         }
-        System.out.println();
         try {
+            //new line between boards
+            System.out.println();
             writer.newLine();
+            //increment swaps based on how many boards we print
             swaps++;
 
         } catch (IOException e) {
@@ -424,36 +439,3 @@ public class SlidingAstar {
         }
     }
 }
-
-/*
- * dislayBoard(Board board) - takes board and prints each element
- * 
- * displayPath(Board board) - starts a given board and works through pointers,
- * adding each parent to a list and displaying the path
- * 
- * identical(Board, Board) - loops through each board and check if match
- * 
- * find(Board, List<Board>) - loops through a board list and calls identical(),
- * returns index of list if match found
- * 
- * exists(Board, List<Board>) - checks if a board exists using identical()
- * 
- * goal(Board) - calls identical(Board, GOAL)
- * 
- * Board copy(Board) - returns new board using the board.array and size
- * 
- * selectBest(List<Board>) - Loops through the list finding the lowest f value
- * and returns index
- * 
- * heuristic_D(Board) - uses taxi cab method
- * 
- * heuristic_M(Board) - uses misplaced values heuristic only\
- * 
- * createChild(Board, int i, int j, char direction) - calls Copy() to make a
- * copy of the board and then moves the i,j in one direction
- * 
- * generate(Board) - finds the blank and figures out which directions it can
- * move. adds children by calling createChild with true directions
- * 
- * solve() - use open and closed list, finds best heuristic board,
- */

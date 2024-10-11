@@ -66,3 +66,6 @@
 1 5 2 
 6 3 7 
 
+Swaps made: 17
+Boards Searched: 152
+Runtime in ms: 2
