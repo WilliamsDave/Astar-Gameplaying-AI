@@ -1,0 +1,205 @@
+G 4 2 10 
+G R G R 
+6 5 R G 
+11 15 G 12 
+
+G 4 2 10 
+G 5 G R 
+6 R R G 
+11 15 G 12 
+
+G 4 2 10 
+6 5 G R 
+G R R G 
+11 15 G 12 
+
+G 4 2 10 
+6 5 G R 
+11 R R G 
+G 15 G 12 
+
+G 4 2 10 
+11 5 G R 
+6 R R G 
+G 15 G 12 
+
+G 4 2 10 
+5 11 G R 
+6 R R G 
+G 15 G 12 
+
+G 4 2 10 
+5 11 R G 
+6 R R G 
+G 15 G 12 
+
+G 4 2 10 
+5 11 R G 
+6 R R 12 
+G 15 G G 
+
+G 4 2 10 
+5 11 R 12 
+6 R R G 
+G 15 G G 
+
+G 4 2 10 
+5 11 12 R 
+6 R R G 
+G 15 G G 
+
+G 4 2 10 
+5 11 12 R 
+6 R R G 
+G G 15 G 
+
+G 4 2 10 
+5 11 12 R 
+6 R R G 
+G G G 15 
+
+G 4 2 10 
+5 11 12 R 
+6 R R 15 
+G G G G 
+
+G 4 2 10 
+5 11 12 15 
+6 R R R 
+G G G G 
+
+G 4 2 10 
+5 11 12 15 
+R 6 R R 
+G G G G 
+
+G 4 2 10 
+5 11 12 15 
+R R 6 R 
+G G G G 
+
+G 4 2 10 
+5 11 12 15 
+R R R 6 
+G G G G 
+
+G 2 4 10 
+5 11 12 15 
+R R R 6 
+G G G G 
+
+2 G 4 10 
+5 11 12 15 
+R R R 6 
+G G G G 
+
+2 4 G 10 
+5 11 12 15 
+R R R 6 
+G G G G 
+
+2 4 G 10 
+5 11 12 6 
+R R R 15 
+G G G G 
+
+2 4 G 6 
+5 11 12 10 
+R R R 15 
+G G G G 
+
+2 4 G 6 
+5 11 12 15 
+R R R 10 
+G G G G 
+
+2 4 G 6 
+5 11 12 15 
+R R R G 
+G G G 10 
+
+2 4 G 6 
+5 11 12 15 
+R R R G 
+G G 10 G 
+
+2 4 G 6 
+5 11 12 15 
+R R R G 
+G 10 G G 
+
+2 4 G 6 
+5 11 12 15 
+R R R G 
+10 G G G 
+
+2 4 G 6 
+5 11 12 15 
+10 R R G 
+R G G G 
+
+2 4 G 6 
+10 11 12 15 
+5 R R G 
+R G G G 
+
+2 4 G 6 
+10 11 12 15 
+R R R G 
+5 G G G 
+
+2 4 12 6 
+10 11 G 15 
+R R R G 
+5 G G G 
+
+2 4 12 6 
+10 11 R 15 
+R R G G 
+5 G G G 
+
+2 4 R 6 
+10 11 12 15 
+R R G G 
+5 G G G 
+
+2 4 R 6 
+10 11 12 15 
+R G R G 
+5 G G G 
+
+2 4 R 6 
+10 11 12 15 
+G R R G 
+5 G G G 
+
+2 4 R 6 
+10 11 12 15 
+5 R R G 
+G G G G 
+
+2 4 R 6 
+10 11 12 15 
+R 5 R G 
+G G G G 
+
+2 4 R 6 
+10 11 12 15 
+R R 5 G 
+G G G G 
+
+2 4 12 6 
+10 11 R 15 
+R R 5 G 
+G G G G 
+
+2 4 12 6 
+10 11 5 15 
+R R R G 
+G G G G 
+
+2 4 5 6 
+10 11 12 15 
+R R R G 
+G G G G 
+
